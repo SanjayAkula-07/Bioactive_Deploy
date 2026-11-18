@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: biopredict
-    runtime: docker
-    plan: free
-    healthCheckPath: /health
