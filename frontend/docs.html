@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "on-primary": "#ffffff",
+        "secondary": "#0284c7",
+        "on-primary-container": "#f5fff7",
+        "tertiary-container": "#2563eb",
+        "surface-bright": "#ffffff",
+        "surface-dim": "#f1f5f9",
+        "on-surface": "#0f172a",
+        "inverse-surface": "#1e293b",
+        "surface-container-high": "#e2e8f0",
+        "surface-container": "#f8fafc",
+        "surface-container-lowest": "#ffffff",
+        "on-background": "#0f172a",
+        "background": "#ffffff",
+        "surface-container-low": "#f8fafc",
+        "outline": "#cbd5e1",
+        "outline-variant": "#e2e8f0",
+        "tertiary": "#2563eb",
+        "primary": "#059669",
+        "surface-variant": "#f1f5f9",
+        "on-surface-variant": "#64748b",
+        "error": "#dc2626",
+        "bio-active": "#059669",
+        "bio-warning": "#d97706",
+        "cpk-carbon": "#475569",
+        "cpk-oxygen": "#dc2626",
+        "cpk-nitrogen": "#2563eb",
+        "cpk-sulfur": "#d97706",
+        "cpk-halogen": "#16a34a"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.125rem",
+        "lg": "0.375rem",
+        "xl": "0.5rem",
+        "full": "0.75rem"
+      },
+      "spacing": {
+        "space-2xl": "3rem",
+        "space-md": "1rem",
+        "gutter": "1rem",
+        "gutter-desktop": "1.5rem",
+        "space-xs": "0.25rem",
+        "margin": "1rem",
+        "space-xl": "2rem",
+        "space-sm": "0.5rem",
+        "margin-desktop": "2rem",
+        "space-lg": "1.5rem"
+      },
+      "fontFamily": {
+        "headline-sm": ["Space Grotesk", "sans-serif"],
+        "headline-md": ["Space Grotesk", "sans-serif"],
+        "headline-lg": ["Space Grotesk", "sans-serif"],
+        "body-md": ["Space Grotesk", "sans-serif"],
+        "body-sm": ["Space Grotesk", "sans-serif"],
+        "label-badge": ["JetBrains Mono", "monospace"],
+        "label-code": ["JetBrains Mono", "monospace"]
+      },
+      "fontSize": {
+        "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+        "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+        "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+        "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+        "label-badge": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+        "label-code": ["12px", { "lineHeight": "18px", "fontWeight": "500" }]
+      }
+    }
+  }
+};</script><script src="bp.js"></script>
+</head><body class="bg-white font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-72 bg-white border-r border-outline-variant z-50 flex flex-col justify-between shadow-[1px_0_4px_rgba(0,0,0,0.03)]"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center gap-space-sm border-b border-outline-variant bg-surface-container"><img alt="BioPredict Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrDOk7-OtilqaBuZoeT7EWt1l_ZS0_DBxjlbTA8f24oXM-e8NtkZz35tD0niqIIOtxGd2Mmea4Ww5VvJudFSawaGlVBSn7tDtublchkdQdFiC9VFNTYxcjr-pcUC58wFYT2K75J5UIKwhndA0uWpasc2JFWXPrkQ5kJTFPSJjldmQUkb2j-ikYTOAW_ZPAnmJG_7fTM0RnewU6FDHbNXMk88EOMmJnAbmQ-EO9Bcfcc"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">BioPredict</span></div><span class="font-label-badge text-label-badge text-primary uppercase tracking-wider font-semibold">v1.2.0 • XGBoost Active</span></div></div><div class="px-space-md py-space-sm"><div class="px-space-sm py-space-xs rounded-lg bg-surface-container border border-outline-variant/60 flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-bio-active animate-pulse"></span><span class="font-label-code text-label-code text-on-surface-variant">Target: CHEMBL230</span></div><span class="font-label-badge text-label-badge text-primary bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.5 rounded">COX-2</span></div></div><nav class="flex flex-col px-space-sm py-space-xs gap-space-xs" data-active-classes="bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200/80 shadow-sm"><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-body-md text-body-md text-slate-600 hover:bg-surface-variant hover:text-on-surface transition-all" data-path="single-predictor" href="#"><span class="material-symbols-outlined text-xl text-slate-500">science</span><span>Single Predictor</span></a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-body-md text-body-md text-slate-600 hover:bg-surface-variant hover:text-on-surface transition-all" data-path="batch-screening" href="#"><span class="material-symbols-outlined text-xl text-slate-500">dataset</span><span>Batch Screening</span></a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-body-md text-body-md text-slate-600 hover:bg-surface-variant hover:text-on-surface transition-all" data-path="model-benchmarks" href="#"><span class="material-symbols-outlined text-xl text-slate-500">analytics</span><span>Model Benchmarks</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl transition-all bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200/80 shadow-sm" data-path="documentation-and-guide" href="#"><span class="material-symbols-outlined text-xl text-emerald-600">menu_book</span><span>Documentation &amp; Guide</span></a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-body-md text-body-md text-slate-600 hover:bg-surface-variant hover:text-on-surface transition-all" data-path="login-and-security" href="#"><span class="material-symbols-outlined text-xl text-slate-500">lock</span><span>Login &amp; Security</span></a></nav></div><div class="p-space-md bg-surface-container border-t border-outline-variant flex flex-col gap-space-sm"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-slate-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNbXQ7T5_p689Vh_aYrDZW7QzTnWrJVGbWpJuqdI5IPbrD5EUQNt5ex2Wzw-J3QBX17xVyq6SrPato_dEJLtyOYpGSewxx1TP7YvusRt5ij3qAYTDC5jode_kuymBTF-W1XTTmt5P3uuOPFWUBERdYa-2SICypxrRxpVT6eclFrMhKmy8IMIpIZrivqCXmhYHJbprwzmbHppGYpJelz265wrOqtYymhsAygtnYIeA"/><div class="flex flex-col min-w-0 flex-1"><span class="font-body-sm text-body-sm font-semibold text-on-surface truncate">Dr. Elena Vance</span><span class="font-label-badge text-label-badge text-on-surface-variant truncate">Computational Chemist</span></div><a class="text-on-surface-variant hover:text-on-surface p-1 transition-colors" data-path="login-and-security" href="#" title="Switch Account"><span class="material-symbols-outlined text-lg">logout</span></a></div><div class="flex items-center justify-between pt-space-xs border-t border-outline-variant/60"><div class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-bio-active"></span><span class="font-label-badge text-label-badge text-on-surface-variant">API Online (Uvicorn 0.28)</span></div><span class="font-label-badge text-label-badge text-sky-700 bg-sky-50 px-1.5 py-0.5 rounded font-label-code">14ms</span></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-white/90 backdrop-blur-md z-40 border-b border-outline-variant shadow-[0_1px_3px_rgba(0,0,0,0.02)]"><div class="h-16 w-full px-gutter-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md"><img alt="BioPredict Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrDOk7-OtilqaBuZoeT7EWt1l_ZS0_DBxjlbTA8f24oXM-e8NtkZz35tD0niqIIOtxGd2Mmea4Ww5VvJudFSawaGlVBSn7tDtublchkdQdFiC9VFNTYxcjr-pcUC58wFYT2K75J5UIKwhndA0uWpasc2JFWXPrkQ5kJTFPSJjldmQUkb2j-ikYTOAW_ZPAnmJG_7fTM0RnewU6FDHbNXMk88EOMmJnAbmQ-EO9Bcfcc"/><div class="hidden sm:flex items-center gap-space-sm"><span class="font-label-code text-label-code text-on-surface-variant">Target:</span><span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-label-code text-label-code flex items-center gap-1.5 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-bio-active"></span>COX-2 (CHEMBL230) Model Ready</span></div></div><div class="flex items-center gap-space-md"><div class="hidden md:flex items-center px-space-sm py-1 rounded-lg bg-surface-container border border-outline-variant font-label-code text-label-code text-on-surface-variant gap-space-xs"><span class="material-symbols-outlined text-sm text-emerald-600">memory</span><span class="text-slate-700 font-medium">Morgan ECFP4 • n=2048</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-emerald-500/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNbXQ7T5_p689Vh_aYrDZW7QzTnWrJVGbWpJuqdI5IPbrD5EUQNt5ex2Wzw-J3QBX17xVyq6SrPato_dEJLtyOYpGSewxx1TP7YvusRt5ij3qAYTDC5jode_kuymBTF-W1XTTmt5P3uuOPFWUBERdYa-2SICypxrRxpVT6eclFrMhKmy8IMIpIZrivqCXmhYHJbprwzmbHppGYpJelz265wrOqtYymhsAygtnYIeA"/></div></div></header><main class="w-full pt-16 bg-slate-50/50 min-h-screen"><div class="flex flex-col w-full pb-space-2xl">
+<!-- Interactive Navigation Bar & Header Pill Matrix -->
+<div class="w-full px-gutter-desktop pt-space-lg pb-space-md flex flex-col gap-space-md">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs max-w-3xl">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-badge text-label-badge uppercase tracking-widest text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Technical Compendium &amp; Defense Suite</span>
+<span class="text-slate-300 font-label-badge">•</span>
+<span class="font-label-badge text-label-badge text-sky-700 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded-full font-label-code">Doc Ref: BIO-2025-COX2-V3</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-slate-900 tracking-tight">
+          System Documentation &amp; Viva Scientific Defense
+        </h1>
+<p class="font-body-md text-body-md text-slate-600">
+          Architectural dataflow specifications, high-throughput FastAPI REST schemas, and quantitative mechanistic defenses for the selective COX-2 (CHEMBL230) gradient-boosted virtual screening pipeline.
+        </p>
+</div>
+<!-- Quick Action Badges -->
+<div class="flex flex-wrap items-center gap-space-xs self-start lg:self-auto">
+<div class="flex items-center gap-2 px-space-md py-2 rounded-xl bg-white border border-outline-variant shadow-sm">
+<span class="w-2 h-2 rounded-full bg-bio-active animate-ping"></span>
+<span class="font-label-code text-label-code text-slate-700 font-medium">Uvicorn Core: Healthy</span>
+</div>
+<button class="flex items-center gap-1.5 px-space-md py-2 rounded-xl bg-white hover:bg-slate-50 border border-outline-variant text-slate-700 font-body-sm text-body-sm transition-colors shadow-sm" onclick="window.print()">
+<span class="material-symbols-outlined text-base text-emerald-600">download_for_offline</span>
+<span class="font-medium">Export Dossier (PDF)</span>
+</button>
+</div>
+</div>
+<!-- Sticky Pill Navigation Tabstrip -->
+<div class="flex items-center gap-space-xs overflow-x-auto py-1 mt-space-xs no-scrollbar">
+<a class="doc-nav-tab px-space-md py-2 rounded-xl font-label-code text-label-code bg-emerald-600 text-white font-semibold transition-all whitespace-nowrap shadow-sm hover:bg-emerald-700" href="#executive-overview">
+        01. Executive Overview
+      </a>
+<a class="doc-nav-tab px-space-md py-2 rounded-xl font-label-code text-label-code bg-white hover:bg-slate-100 border border-outline-variant text-slate-600 hover:text-slate-900 transition-all whitespace-nowrap shadow-sm" href="#system-architecture">
+        02. End-to-End Pipeline
+      </a>
+<a class="doc-nav-tab px-space-md py-2 rounded-xl font-label-code text-label-code bg-white hover:bg-slate-100 border border-outline-variant text-slate-600 hover:text-slate-900 transition-all whitespace-nowrap shadow-sm" href="#api-endpoints">
+        03. FastAPI Reference
+      </a>
+<a class="doc-nav-tab px-space-md py-2 rounded-xl font-label-code text-label-code bg-white hover:bg-slate-100 border border-outline-variant text-slate-600 hover:text-slate-900 transition-all whitespace-nowrap shadow-sm" href="#viva-defense">
+        04. Academic Defense &amp; Viva Q&amp;A
+      </a>
+<a class="doc-nav-tab px-space-md py-2 rounded-xl font-label-code text-label-code bg-white hover:bg-slate-100 border border-outline-variant text-slate-600 hover:text-slate-900 transition-all whitespace-nowrap shadow-sm" href="#dependencies-cpk">
+        05. CPK &amp; Dependencies
+      </a>
+</div>
+</div>
+<div class="px-gutter-desktop flex flex-col gap-space-2xl mt-space-md">
+<!-- SECTION 01: Executive Overview & Visual Stats -->
+<section class="flex flex-col gap-space-md scroll-mt-24" id="executive-overview">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-1.5 h-6 rounded-full bg-emerald-600"></span>
+<h2 class="font-headline-md text-headline-md text-slate-900">01. Executive Overview &amp; Target Profile</h2>
+</div>
+<span class="font-label-badge text-label-badge text-slate-500 bg-white border border-outline-variant px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold">ChEMBL Target: CHEMBL230</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Card 1: Biological Target -->
+<div class="flex flex-col justify-between p-space-lg rounded-xl bg-white border border-outline-variant shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-emerald-500/5 blur-2xl group-hover:bg-emerald-500/10 transition-all"></div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-emerald-700 font-semibold uppercase">Macromolecular Target</span>
+<span class="font-headline-sm text-headline-sm text-slate-900">COX-2 (PTGS2)</span>
+<p class="font-body-sm text-body-sm text-slate-600 mt-space-xs">
+              Prostaglandin-endoperoxide synthase 2. Primary inducible inflammatory therapeutic target in arthritic, vascular, and oncologic pathobiology.
+            </p>
+</div>
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/60 flex items-center justify-between">
+<span class="font-label-code text-label-code text-slate-500">Class</span>
+<span class="font-label-code text-label-code text-sky-700 font-semibold">Membrane Oxidoreductase</span>
+</div>
+</div>
+<!-- Card 2: Representation Vector -->
+<div class="flex flex-col justify-between p-space-lg rounded-xl bg-white border border-outline-variant shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-sky-500/5 blur-2xl group-hover:bg-sky-500/10 transition-all"></div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-sky-700 font-semibold uppercase">Vector Featurizer</span>
+<span class="font-headline-sm text-headline-sm text-slate-900">Morgan Circular ECFP4</span>
+<p class="font-body-sm text-body-sm text-slate-600 mt-space-xs">
+              Radius 2 structural neighborhood folded to 2048-bit bitvectors via SHA-256 equivalent hashing, capturing pharmacophore pharmacophoric topologies.
+            </p>
+</div>
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/60 flex items-center justify-between">
+<span class="font-label-code text-label-code text-slate-500">Dimension</span>
+<span class="font-label-code text-label-code text-emerald-700 font-semibold">2,048 Sparse Bits</span>
+</div>
+</div>
+<!-- Card 3: Inference Engine -->
+<div class="flex flex-col justify-between p-space-lg rounded-xl bg-white border border-outline-variant shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-blue-700 font-semibold uppercase">Inference Engine</span>
+<span class="font-headline-sm text-headline-sm text-slate-900">XGBoost Extreme Boosted</span>
+<p class="font-body-sm text-body-sm text-slate-600 mt-space-xs">
+              Gradient-boosted decision forest tuned with early stopping, tree-depth 6, and log-loss regularizer optimized for asymmetric chemical space sparsity.
+            </p>
+</div>
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/60 flex items-center justify-between">
+<span class="font-label-code text-label-code text-slate-500">Latency</span>
+<span class="font-label-code text-label-code text-emerald-700 font-semibold">&lt; 1.4ms / molecule</span>
+</div>
+</div>
+<!-- Card 4: Validation Metric -->
+<div class="flex flex-col justify-between p-space-lg rounded-xl bg-white border border-outline-variant shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-amber-700 font-semibold uppercase">10-Fold CV Validation</span>
+<span class="font-headline-sm text-headline-sm text-slate-900">ROC-AUC: 0.861</span>
+<p class="font-body-sm text-body-sm text-slate-600 mt-space-xs">
+              Trained on 4,380 development molecules (6,240 cleaned ChEMBL records; Active: IC50 ≤ 1,000 nM, Inactive: IC50 ≥ 10,000 nM). Molecule-aware 70/30 development/holdout split (1,860 holdout molecules).
+            </p>
+</div>
+<div class="mt-space-md pt-space-xs border-t border-outline-variant/60 flex items-center justify-between">
+<span class="font-label-code text-label-code text-slate-500">F1-Score</span>
+<span class="font-label-code text-label-code text-slate-900 font-semibold">0.893 (Macro)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 02: End-to-End System Architecture & Dataflow -->
+<section class="flex flex-col gap-space-md scroll-mt-24" id="system-architecture">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-1.5 h-6 rounded-full bg-sky-600"></span>
+<h2 class="font-headline-md text-headline-md text-slate-900">02. End-to-End Pipeline &amp; Dataflow Execution</h2>
+</div>
+<span class="font-label-badge text-label-badge text-sky-700 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded-full font-label-code">Client -&gt; Gateway -&gt; RDKit -&gt; Model</span>
+</div>
+<!-- Interactive Architecture Flow Diagram Container -->
+<div class="p-space-xl rounded-xl bg-white border border-outline-variant shadow-sm flex flex-col gap-space-lg">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-md border-b border-outline-variant/60">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-slate-900">Synchronous Execution Circuit</span>
+<span class="font-body-sm text-body-sm text-slate-500">Hover nodes to reveal memory lifecycle, compute bounds, and deterministic data conversions.</span>
+</div>
+<div class="flex items-center gap-space-xs px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200">
+<span class="w-2 h-2 rounded-full bg-bio-active animate-pulse"></span>
+<span class="font-label-code text-label-code text-emerald-800 font-medium">Deterministic Pipeline Active</span>
+</div>
+</div>
+<!-- 4 Step Interactive Flow Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md relative">
+<!-- Flow Card 1: Client Presentation -->
+<div class="p-space-lg rounded-xl bg-surface-container hover:bg-slate-100 border border-outline-variant transition-all cursor-pointer flex flex-col gap-space-md group relative shadow-sm">
+<div class="flex items-center justify-between">
+<span class="w-8 h-8 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center font-label-code text-label-code text-emerald-800 font-bold">01</span>
+<span class="material-symbols-outlined text-emerald-600 text-xl">devices</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge uppercase tracking-wider text-slate-500 font-semibold">Presentation Tier</span>
+<h3 class="font-headline-sm text-headline-sm text-slate-900">Client Layer</h3>
+<p class="font-body-sm text-body-sm text-slate-600">
+                Pure HTML5/Tailwind/ES6 runtime. Hosts embedded <span class="text-sky-700 font-label-code font-semibold">3Dmol.js</span> WebGL canvas for interactive 3D electron cloud &amp; conformer manipulation.
+              </p>
+</div>
+<div class="p-space-xs rounded bg-white border border-outline-variant flex flex-col gap-1">
+<span class="font-label-badge text-label-badge text-slate-500 uppercase">Payload Out</span>
+<span class="font-label-code text-label-code text-emerald-700 font-semibold truncate">JSON: {"query": "Celecoxib"}</span>
+</div>
+</div>
+<!-- Flow Card 2: Server Gateway -->
+<div class="p-space-lg rounded-xl bg-surface-container hover:bg-slate-100 border border-outline-variant transition-all cursor-pointer flex flex-col gap-space-md group relative shadow-sm">
+<div class="flex items-center justify-between">
+<span class="w-8 h-8 rounded-full bg-sky-100 border border-sky-200 flex items-center justify-center font-label-code text-label-code text-sky-800 font-bold">02</span>
+<span class="material-symbols-outlined text-sky-600 text-xl">hub</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge uppercase tracking-wider text-slate-500 font-semibold">Asynchronous Router</span>
+<h3 class="font-headline-sm text-headline-sm text-slate-900">FastAPI / Uvicorn</h3>
+<p class="font-body-sm text-body-sm text-slate-600">
+                ASGI async router running on Uvicorn workers. Executes strict Pydantic v2 payload schema validation and handles batch multithread queueing.
+              </p>
+</div>
+<div class="p-space-xs rounded bg-white border border-outline-variant flex flex-col gap-1">
+<span class="font-label-badge text-label-badge text-slate-500 uppercase">Validation</span>
+<span class="font-label-code text-label-code text-sky-700 font-semibold">Pydantic Regex &lt;4096-char</span>
+</div>
+</div>
+<!-- Flow Card 3: Resolver -->
+<div class="p-space-lg rounded-xl bg-surface-container hover:bg-slate-100 border border-outline-variant transition-all cursor-pointer flex flex-col gap-space-md group relative shadow-sm">
+<div class="flex items-center justify-between">
+<span class="w-8 h-8 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center font-label-code text-label-code text-blue-800 font-bold">03</span>
+<span class="material-symbols-outlined text-blue-600 text-xl">travel_explore</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge uppercase tracking-wider text-slate-500 font-semibold">Resolvers &amp; Cache</span>
+<h3 class="font-headline-sm text-headline-sm text-slate-900">PubChem PUG REST</h3>
+<p class="font-body-sm text-body-sm text-slate-600">
+                Normalizes colloquial trade names to canonical isomeric SMILES via asynchronous HTTPS retry workers with localized TTL Redis caching.
+              </p>
+</div>
+<div class="p-space-xs rounded bg-white border border-outline-variant flex flex-col gap-1">
+<span class="font-label-badge text-label-badge text-slate-500 uppercase">Resolved Output</span>
+<span class="font-label-code text-label-code text-blue-700 font-semibold truncate">SMILES: O=S(=O)(c1...)</span>
+</div>
+</div>
+<!-- Flow Card 4: Cheminformatics Core -->
+<div class="p-space-lg rounded-xl bg-surface-container hover:bg-slate-100 border border-outline-variant transition-all cursor-pointer flex flex-col gap-space-md group relative shadow-sm">
+<div class="flex items-center justify-between">
+<span class="w-8 h-8 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center font-label-code text-label-code text-emerald-800 font-bold">04</span>
+<span class="material-symbols-outlined text-emerald-600 text-xl">biotech</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge uppercase tracking-wider text-slate-500 font-semibold">Cheminformatics &amp; ML</span>
+<h3 class="font-headline-sm text-headline-sm text-slate-900">RDKit + XGBoost</h3>
+<p class="font-body-sm text-body-sm text-slate-600">
+                ETKDGv3 computes 3D coordinates; MorganGenerator extracts 2048-bit fingerprints; XGBoost infers target probability and IC50 bin.
+              </p>
+</div>
+<div class="p-space-xs rounded bg-white border border-outline-variant flex flex-col gap-1">
+<span class="font-label-badge text-label-badge text-slate-500 uppercase">Prediction Score</span>
+<span class="font-label-code text-label-code text-emerald-700 font-bold">ACTIVE (Conf: 0.9421)</span>
+</div>
+</div>
+</div>
+<!-- Architectural Pipeline Code Trace -->
+<div class="p-space-md rounded-xl bg-slate-900 border border-slate-800 flex flex-col gap-space-xs shadow-md">
+<div class="flex items-center justify-between pb-space-xs border-b border-slate-800">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-sm text-sky-400">terminal</span>
+<span class="font-label-code text-label-code text-slate-400">core/pipeline.py • Execution Graph Snippet</span>
+</div>
+<span class="font-label-badge text-label-badge text-slate-400">Python 3.11</span>
+</div>
+<pre class="font-label-code text-label-code text-slate-200 overflow-x-auto p-space-sm bg-slate-950/60 rounded-lg leading-relaxed"><code><span class="text-sky-400">def</span> <span class="text-emerald-400">compute_bioactivity_vector</span>(smiles: <span class="text-sky-300">str</span>) -&gt; <span class="text-sky-300">PredictionResult</span>:
+    mol = Chem.MolFromSmiles(smiles)
+    <span class="text-sky-400">if not</span> mol:
+        <span class="text-sky-400">raise</span> HTTPException(status_code=422, detail=<span class="text-amber-300">"Invalid valence or SMILES string"</span>)
+    
+    <span class="text-slate-500"># 1. 3D Conformation Generation via ETKDGv3 &amp; MMFF94 energy minimization</span>
+    mol_3d = Chem.AddHs(mol)
+    AllChem.EmbedMolecule(mol_3d, AllChem.ETKDGv3())
+    AllChem.MMFFOptimizeMolecule(mol_3d, maxIters=500)
+    
+    <span class="text-slate-500"># 2. Extract 2048-bit Morgan Circular Fingerprint (ECFP4 equivalent)</span>
+    generator = rdFingerprintGenerator.GetMorganGenerator(radius=2, fpSize=2048)
+    fp = generator.GetFingerprintAsNumPy(mol)
+    
+    <span class="text-slate-500"># 3. Model Inference</span>
+    prob_active = xgb_model.predict_proba(fp.reshape(1, -1))[0][1]
+    <span class="text-sky-400">return</span> PredictionResult(prob=prob_active, is_active=prob_active &gt;= 0.5, sdf=Chem.MolToMolBlock(mol_3d))</code></pre>
+</div>
+</div>
+</section>
+<!-- SECTION 03: Interactive FastAPI Endpoints Reference -->
+<section class="flex flex-col gap-space-md scroll-mt-24" id="api-endpoints">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-1.5 h-6 rounded-full bg-blue-600"></span>
+<h2 class="font-headline-md text-headline-md text-slate-900">03. Interactive FastAPI REST Endpoints</h2>
+</div>
+<span class="font-label-badge text-label-badge text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-semibold">OpenAPI 3.1.0 Compliant</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md">
+<!-- Endpoint 1: GET /health -->
+<div class="p-space-lg rounded-xl bg-white border border-outline-variant shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="px-2.5 py-1 rounded bg-sky-50 text-sky-700 border border-sky-200 font-label-code text-label-code font-bold">GET</span>
+<span class="font-label-code text-label-code text-slate-900 font-semibold">/health</span>
+</div>
+<span class="font-label-badge text-label-badge text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded flex items-center gap-1 font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-bio-active"></span>200 OK
+            </span>
+</div>
+<p class="font-body-sm text-body-sm text-slate-600">
+            Liveness &amp; readiness probe. Returns loaded model weights, hash identifier, and available RDKit C++ kernel runtime statistics.
+          </p>
+<div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-slate-500 uppercase">Response Payload Preview</span>
+<pre class="font-label-code text-label-code text-sky-800 overflow-x-auto"><code>{
+  "status": "ready",
+  "target": "CHEMBL230",
+  "model_version": "xgb_v1.2.0_cox2",
+  "fingerprint_engine": "RDKit 2023.09.5",
+  "gpu_acceleration": false
+}</code></pre>
+</div>
+<div class="flex items-center justify-between text-slate-500 font-label-code text-label-code pt-1 border-t border-outline-variant/60">
+<span>Auth: None Required</span>
+<span class="font-medium text-slate-700">Avg Latency: 2.1ms</span>
+</div>
+</div>
+<!-- Endpoint 2: POST /predict -->
+<div class="p-space-lg rounded-xl bg-white border border-outline-variant shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="px-2.5 py-1 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-label-code text-label-code font-bold">POST</span>
+<span class="font-label-code text-label-code text-slate-900 font-semibold">/predict</span>
+</div>
+<span class="font-label-badge text-label-badge text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-semibold">Core Predictor</span>
+</div>
+<p class="font-body-sm text-body-sm text-slate-600">
+            Single compound inference. Accepts compound trade name or SMILES string. Returns probability, binary active status, Lipinski descriptors, and full 3D Molblock.
+          </p>
+<div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-slate-500 uppercase">Request Schema (JSON)</span>
+<pre class="font-label-code text-label-code text-slate-800 overflow-x-auto"><code>{
+  "query": "CC1=CC=C(C=C1)C2=CC(=NN2C3=CC=C(C=C3)S(=O)(=O)N)C(F)(F)F",
+  "generate_3d": true,
+  "conformers": 1
+}</code></pre>
+</div>
+<div class="flex items-center justify-between text-slate-500 font-label-code text-label-code pt-1 border-t border-outline-variant/60">
+<span>Rate Limit: 60 req/min</span>
+<span class="font-medium text-slate-700">Response: application/json</span>
+</div>
+</div>
+<!-- Endpoint 3: POST /predict_batch -->
+<div class="p-space-lg rounded-xl bg-white border border-outline-variant shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="px-2.5 py-1 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-label-code text-label-code font-bold">POST</span>
+<span class="font-label-code text-label-code text-slate-900 font-semibold">/predict_batch</span>
+</div>
+<span class="font-label-badge text-label-badge text-sky-700 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded font-label-code font-medium">multipart/form-data</span>
+</div>
+<p class="font-body-sm text-body-sm text-slate-600">
+            High-throughput screening endpoint. Ingests CSV files up to 10,000 SMILES rows, orchestrating multi-core fingerprint extraction via Python <code class="font-label-code text-sky-700 bg-sky-50 px-1 py-0.5 rounded">concurrent.futures</code>.
+          </p>
+<div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-slate-500 uppercase">Form Parameters</span>
+<div class="flex flex-col gap-1 font-label-code text-label-code">
+<div class="flex justify-between text-slate-800"><span>file</span><span class="text-slate-500">UploadFile (CSV, .smi)</span></div>
+<div class="flex justify-between text-slate-800"><span>smiles_column</span><span class="text-slate-500">string (default: 'SMILES')</span></div>
+<div class="flex justify-between text-slate-800"><span>cutoff_threshold</span><span class="text-slate-500">float (default: 0.5)</span></div>
+</div>
+</div>
+<div class="flex items-center justify-between text-slate-500 font-label-code text-label-code pt-1 border-t border-outline-variant/60">
+<span>Throughput: ~1,200 mol/sec</span>
+<span class="font-medium text-slate-700">Return: CSV / JSON stream</span>
+</div>
+</div>
+<!-- Endpoint 4: GET /models -->
+<div class="p-space-lg rounded-xl bg-white border border-outline-variant shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="px-2.5 py-1 rounded bg-sky-50 text-sky-700 border border-sky-200 font-label-code text-label-code font-bold">GET</span>
+<span class="font-label-code text-label-code text-slate-900 font-semibold">/models</span>
+</div>
+<span class="font-label-badge text-label-badge text-slate-600 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded font-medium">Model Telemetry</span>
+</div>
+<p class="font-body-sm text-body-sm text-slate-600">
+            Provides comprehensive holdout test metrics, cross-validation dispersion, confusion matrix elements, and top-50 feature importance weights for external auditing.
+          </p>
+<div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-slate-500 uppercase">Response Sample</span>
+<pre class="font-label-code text-label-code text-emerald-800 overflow-x-auto"><code>{
+  "test_roc_auc": 0.861,
+  "test_accuracy": 0.8177,
+  "precision": 0.8508,
+  "recall": 0.9005,
+  "specificity": 0.6169,
+  "holdout_samples": 1860
+}</code></pre>
+</div>
+<div class="flex items-center justify-between text-slate-500 font-label-code text-label-code pt-1 border-t border-outline-variant/60">
+<span>Cache-Control: max-age=3600</span>
+<span class="font-medium text-slate-700">Audit: Public</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 04: Academic Defense & Viva Q&A Cheat Sheet -->
+<section class="flex flex-col gap-space-md scroll-mt-24" id="viva-defense">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-1.5 h-6 rounded-full bg-amber-500"></span>
+<h2 class="font-headline-md text-headline-md text-slate-900">04. Academic Defense &amp; Viva Q&amp;A Guide</h2>
+</div>
+<span class="font-label-badge text-label-badge text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full font-semibold">Viva Defense Readiness</span>
+</div>
+<p class="font-body-md text-body-md text-slate-600">
+        Core examination questions frequently raised by defense panels and peer reviewers regarding target selection, featurization nuances, machine learning paradigm choices, and 3D force-field calculations.
+      </p>
+<!-- Collapsible Accordion Group -->
+<div class="flex flex-col gap-space-sm">
+<!-- Accordion Item 1 -->
+<div class="rounded-xl bg-white border border-outline-variant overflow-hidden shadow-sm transition-colors">
+<button class="w-full p-space-lg flex items-center justify-between gap-space-md text-left focus:outline-none hover:bg-slate-50 transition-colors" onclick="toggleAccordion('viva-q1')">
+<div class="flex items-center gap-space-md">
+<span class="w-7 h-7 rounded-full bg-sky-50 border border-sky-200 flex items-center justify-center font-label-code text-label-code text-sky-700 font-bold shrink-0">Q1</span>
+<span class="font-headline-sm text-headline-sm text-slate-900">Why specifically target COX-2 rather than pan-COX or COX-1?</span>
+</div>
+<span class="material-symbols-outlined text-emerald-600 text-2xl transition-transform duration-300" id="icon-viva-q1">expand_more</span>
+</button>
+<div class="hidden px-space-lg pb-space-lg flex flex-col gap-space-sm border-t border-outline-variant/60 pt-space-md bg-surface-container" id="viva-q1">
+<div class="p-space-md rounded-lg bg-white border border-outline-variant flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-emerald-700 uppercase font-semibold">Pharmacological Rationale</span>
+<p class="font-body-md text-body-md text-slate-800">
+                Cyclooxygenase-1 (COX-1) is constitutively expressed across most tissues, notably within the gastric mucosa where it synthesizes protective prostaglandins (e.g., PGE2, PGI2) maintaining gastric endothelial integrity and platelet homeostasis. Traditional non-steroidal anti-inflammatory drugs (NSAIDs) such as Aspirin and Indomethacin non-selectively inhibit both isozymes, leading to high incidences of gastrointestinal perforation, bleeding, and ulcers.
+              </p>
+<p class="font-body-sm text-body-sm text-slate-600 mt-1">
+                In contrast, <strong class="text-slate-900 font-semibold">COX-2 (PTGS2)</strong> is an inducible enzyme expressed primarily in response to inflammatory cytokines, shear stress, and mitogens. Selectively inhibiting COX-2 provides anti-inflammatory and analgesic efficacy while significantly sparing the gastroprotective cascade orchestrated by COX-1. Computationally predicting selective binding against ChEMBL230 is vital for finding candidates that occupy the bulkier hydrophobic secondary pocket unique to COX-2.
+              </p>
+</div>
+</div>
+</div>
+<!-- Accordion Item 2 -->
+<div class="rounded-xl bg-white border border-outline-variant overflow-hidden shadow-sm transition-colors">
+<button class="w-full p-space-lg flex items-center justify-between gap-space-md text-left focus:outline-none hover:bg-slate-50 transition-colors" onclick="toggleAccordion('viva-q2')">
+<div class="flex items-center gap-space-md">
+<span class="w-7 h-7 rounded-full bg-sky-50 border border-sky-200 flex items-center justify-center font-label-code text-label-code text-sky-700 font-bold shrink-0">Q2</span>
+<span class="font-headline-sm text-headline-sm text-slate-900">What mathematical principles govern Morgan Circular Fingerprints (ECFP4)?</span>
+</div>
+<span class="material-symbols-outlined text-emerald-600 text-2xl transition-transform duration-300" id="icon-viva-q2">expand_more</span>
+</button>
+<div class="hidden px-space-lg pb-space-lg flex flex-col gap-space-sm border-t border-outline-variant/60 pt-space-md bg-surface-container" id="viva-q2">
+<div class="p-space-md rounded-lg bg-white border border-outline-variant flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-sky-700 uppercase font-semibold">Cheminformatics Topology</span>
+<p class="font-body-md text-body-md text-slate-800">
+                Morgan Circular Fingerprints are the formal computational realization of Extended-Connectivity Fingerprints (ECFP). They execute a modified Morgan algorithm where each heavy atom is initialized with an invariant integer describing its atomic number, valence minus bonded hydrogens, formal charge, and aromaticity status.
+              </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md mt-space-xs">
+<div class="p-space-sm rounded bg-surface-container border border-outline-variant flex flex-col gap-1">
+<span class="font-label-code text-label-code text-emerald-700 font-bold">Iterative Expansion (Radius 2)</span>
+<span class="font-body-sm text-body-sm text-slate-600">At each iteration from 1 to radius $R=2$ (equivalent to diameter 4 bonds, hence ECFP4), each atom collects neighborhood identifiers and hashes them into new integers using hash collision-resistant digests.</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container border border-outline-variant flex flex-col gap-1">
+<span class="font-label-code text-label-code text-sky-700 font-bold">Bit-Folding via Modulo 2048</span>
+<span class="font-body-sm text-body-sm text-slate-600">The resulting integer identifiers are mapped into a fixed-length bit array using the modulo function: <code class="text-emerald-700 font-label-code bg-emerald-50 px-1 py-0.5 rounded">bit_index = hash_id % 2048</code>. This creates a dense yet discriminative representation of pharmacophoric subgraphs.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Accordion Item 3 -->
+<div class="rounded-xl bg-white border border-outline-variant overflow-hidden shadow-sm transition-colors">
+<button class="w-full p-space-lg flex items-center justify-between gap-space-md text-left focus:outline-none hover:bg-slate-50 transition-colors" onclick="toggleAccordion('viva-q3')">
+<div class="flex items-center gap-space-md">
+<span class="w-7 h-7 rounded-full bg-sky-50 border border-sky-200 flex items-center justify-center font-label-code text-label-code text-sky-700 font-bold shrink-0">Q3</span>
+<span class="font-headline-sm text-headline-sm text-slate-900">Why was XGBoost selected over Graph Neural Networks (GNNs) or Deep ChemBERTa?</span>
+</div>
+<span class="material-symbols-outlined text-emerald-600 text-2xl transition-transform duration-300" id="icon-viva-q3">expand_more</span>
+</button>
+<div class="hidden px-space-lg pb-space-lg flex flex-col gap-space-sm border-t border-outline-variant/60 pt-space-md bg-surface-container" id="viva-q3">
+<div class="p-space-md rounded-lg bg-white border border-outline-variant flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-blue-700 uppercase font-semibold">Model Selection Tradeoffs</span>
+<p class="font-body-md text-body-md text-slate-800">
+                While Graph Neural Networks (e.g., GCN, GAT) and SMILES transformer architectures (ChemBERTa) offer expressive latent embeddings, extensive drug discovery benchmarks (e.g., MoleculeNet) demonstrate that on bioactivity classification datasets below 15,000 compounds, gradient-boosted decision trees (XGBoost) consistently match or exceed neural models while exhibiting key advantages:
+              </p>
+<ul class="flex flex-col gap-space-xs mt-space-xs font-body-sm text-body-sm text-slate-600 list-disc pl-5">
+<li><strong class="text-slate-900">Robustness on High-Dimensional Sparse Bitvectors:</strong> Tree splits intrinsically handle sparse 2048-bit inputs through sparsity-aware split finding without vanishing/exploding gradients.</li>
+<li><strong class="text-slate-900">Inference Latency:</strong> Inference takes &lt;1.5ms on a standard CPU core, eliminating GPU dependency in enterprise deployment and lowering cold-start cloud footprint.</li>
+<li><strong class="text-slate-900">Scaffold Interpretability:</strong> Feature importance metrics directly correspond to physical molecular bits that can be reverse-mapped onto specific chemical fragments.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Accordion Item 4 -->
+<div class="rounded-xl bg-white border border-outline-variant overflow-hidden shadow-sm transition-colors">
+<button class="w-full p-space-lg flex items-center justify-between gap-space-md text-left focus:outline-none hover:bg-slate-50 transition-colors" onclick="toggleAccordion('viva-q4')">
+<div class="flex items-center gap-space-md">
+<span class="w-7 h-7 rounded-full bg-sky-50 border border-sky-200 flex items-center justify-center font-label-code text-label-code text-sky-700 font-bold shrink-0">Q4</span>
+<span class="font-headline-sm text-headline-sm text-slate-900">How are 3D conformations generated from a 1D SMILES string?</span>
+</div>
+<span class="material-symbols-outlined text-emerald-600 text-2xl transition-transform duration-300" id="icon-viva-q4">expand_more</span>
+</button>
+<div class="hidden px-space-lg pb-space-lg flex flex-col gap-space-sm border-t border-outline-variant/60 pt-space-md bg-surface-container" id="viva-q4">
+<div class="p-space-md rounded-lg bg-white border border-outline-variant flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-emerald-700 uppercase font-semibold">Stereochemical Conformation Pipeline</span>
+<p class="font-body-md text-body-md text-slate-800">
+                The translation from 1D SMILES string to full Cartesian coordinates $(x_i, y_i, z_i)$ follows a rigorous two-tier physical simulation inside RDKit:
+              </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md mt-space-xs">
+<div class="p-space-sm rounded bg-surface-container border border-outline-variant flex flex-col gap-1">
+<span class="font-label-code text-label-code text-emerald-700 font-bold">1. Distance Geometry (ETKDGv3)</span>
+<span class="font-body-sm text-body-sm text-slate-600">Experimental-Torsion Distance Geometry combines mathematical distance bounds with empirical torsion-angle preferences extracted from the Cambridge Structural Database (CSD) to yield sterically valid ring geometries.</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container border border-outline-variant flex flex-col gap-1">
+<span class="font-label-code text-label-code text-sky-700 font-bold">2. MMFF94 Energy Minimization</span>
+<span class="font-body-sm text-body-sm text-slate-600">The initial distance geometry coordinates undergo 500 gradient steps of Merck Molecular Force Field (MMFF94) optimization, resolving steric clashes and penalizing unfavorable electrostatics to achieve a local thermodynamic minimum.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 05: CPK Elemental Palette & Production Stack Breakdown -->
+<section class="flex flex-col gap-space-md scroll-mt-24" id="dependencies-cpk">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-1.5 h-6 rounded-full bg-emerald-600"></span>
+<h2 class="font-headline-md text-headline-md text-slate-900">05. Standard CPK Atomic Color Legend &amp; Stack Dependencies</h2>
+</div>
+<span class="font-label-badge text-label-badge text-slate-500 bg-white border border-outline-variant px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold">IUPAC / Jmol Convention</span>
+</div>
+<!-- Split Layout: CPK Color Map on Left, Dependencies on Right -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-md">
+<!-- Left: CPK Legend (5 cols) -->
+<div class="xl:col-span-5 p-space-lg rounded-xl bg-white border border-outline-variant shadow-sm flex flex-col justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-emerald-700 uppercase font-semibold">3Dmol.js Visualizer Standard</span>
+<h3 class="font-headline-sm text-headline-sm text-slate-900">CPK Atom Representation</h3>
+<p class="font-body-sm text-body-sm text-slate-600">
+              The chemical visualizer adheres strictly to core Corey-Pauling-Koltun (CPK) conventions for intuitive atomic identification in medicinal reviews:
+            </p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-space-sm">
+<!-- Carbon -->
+<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container border border-outline-variant">
+<span class="w-5 h-5 rounded-full bg-[#475569] shrink-0 shadow-inner"></span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-code text-label-code text-slate-900 font-bold">Carbon (C)</span>
+<span class="font-label-badge text-label-badge text-slate-500 font-label-code">#475569</span>
+</div>
+</div>
+<!-- Oxygen -->
+<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container border border-outline-variant">
+<span class="w-5 h-5 rounded-full bg-[#dc2626] shrink-0 shadow-inner"></span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-code text-label-code text-slate-900 font-bold">Oxygen (O)</span>
+<span class="font-label-badge text-label-badge text-slate-500 font-label-code">#DC2626</span>
+</div>
+</div>
+<!-- Nitrogen -->
+<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container border border-outline-variant">
+<span class="w-5 h-5 rounded-full bg-[#2563eb] shrink-0 shadow-inner"></span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-code text-label-code text-slate-900 font-bold">Nitrogen (N)</span>
+<span class="font-label-badge text-label-badge text-slate-500 font-label-code">#2563EB</span>
+</div>
+</div>
+<!-- Sulfur -->
+<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container border border-outline-variant">
+<span class="w-5 h-5 rounded-full bg-[#d97706] shrink-0 shadow-inner"></span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-code text-label-code text-slate-900 font-bold">Sulfur (S)</span>
+<span class="font-label-badge text-label-badge text-slate-500 font-label-code">#D97706</span>
+</div>
+</div>
+<!-- Halogens -->
+<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container border border-outline-variant">
+<span class="w-5 h-5 rounded-full bg-[#16a34a] shrink-0 shadow-inner"></span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-code text-label-code text-slate-900 font-bold">Halogens (X)</span>
+<span class="font-label-badge text-label-badge text-slate-500 font-label-code">#16A34A</span>
+</div>
+</div>
+<!-- Hydrogen -->
+<div class="flex items-center gap-space-sm p-space-sm rounded-lg bg-surface-container border border-outline-variant">
+<span class="w-5 h-5 rounded-full bg-white border border-slate-300 shrink-0 shadow-inner"></span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-code text-label-code text-slate-900 font-bold">Hydrogen (H)</span>
+<span class="font-label-badge text-label-badge text-slate-500 font-label-code">#FFFFFF</span>
+</div>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant flex items-center justify-between text-slate-600">
+<span class="font-label-badge text-label-badge uppercase font-semibold">Rendering Engine</span>
+<span class="font-label-code text-label-code text-sky-700 font-medium">3Dmol.js WebGL (GPU Native)</span>
+</div>
+</div>
+<!-- Right: Core Dependency Breakdown (7 cols) -->
+<div class="xl:col-span-7 p-space-lg rounded-xl bg-white border border-outline-variant shadow-sm flex flex-col justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-badge text-label-badge text-sky-700 uppercase font-semibold">Production Environment Manifest</span>
+<h3 class="font-headline-sm text-headline-sm text-slate-900">Scientific Stack Dependencies</h3>
+<p class="font-body-sm text-body-sm text-slate-600">
+              Rigid pin-locked library dependencies ensuring reproducible virtual screening and deterministic fingerprint evaluation:
+            </p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+<!-- Dep 1: FastAPI -->
+<div class="p-space-md rounded-lg bg-surface-container border border-outline-variant flex flex-col justify-between gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-code text-label-code text-slate-900 font-bold">fastapi</span>
+<span class="font-label-badge text-label-badge text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded font-semibold">v0.110.0</span>
+</div>
+<p class="font-body-sm text-body-sm text-slate-600">High-performance async server gateway built on Starlette and Pydantic v2.</p>
+<span class="font-label-badge text-label-badge text-sky-700 font-label-code font-medium">ASGI • Non-blocking</span>
+</div>
+<!-- Dep 2: RDKit -->
+<div class="p-space-md rounded-lg bg-surface-container border border-outline-variant flex flex-col justify-between gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-code text-label-code text-slate-900 font-bold">rdkit</span>
+<span class="font-label-badge text-label-badge text-sky-700 bg-sky-50 border border-sky-200 px-1.5 py-0.5 rounded font-semibold">v2023.09.5</span>
+</div>
+<p class="font-body-sm text-body-sm text-slate-600">Open-source cheminformatics C++ bindings for Morgan ECFP4 generation &amp; ETKDG 3D embedding.</p>
+<span class="font-label-badge text-label-badge text-emerald-700 font-label-code font-medium">C++ Core • Boost.Python</span>
+</div>
+<!-- Dep 3: XGBoost -->
+<div class="p-space-md rounded-lg bg-surface-container border border-outline-variant flex flex-col justify-between gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-code text-label-code text-slate-900 font-bold">xgboost</span>
+<span class="font-label-badge text-label-badge text-blue-700 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded font-semibold">v2.0.3</span>
+</div>
+<p class="font-body-sm text-body-sm text-slate-600">Optimized distributed gradient boosting machine with exact tree depth and L1/L2 regularizers.</p>
+<span class="font-label-badge text-label-badge text-blue-700 font-label-code font-medium">Scaffold Robust • SIMD</span>
+</div>
+<!-- Dep 4: Scikit-Learn -->
+<div class="p-space-md rounded-lg bg-surface-container border border-outline-variant flex flex-col justify-between gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-code text-label-code text-slate-900 font-bold">scikit-learn</span>
+<span class="font-label-badge text-label-badge text-amber-800 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded font-semibold">v1.4.1</span>
+</div>
+<p class="font-body-sm text-body-sm text-slate-600">Provides stratified K-Fold validation routines, ROC-AUC calculation, and confusion matrix auditing.</p>
+<span class="font-label-badge text-label-badge text-amber-800 font-label-code font-medium">Validation &amp; Scoring</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-xs pt-space-xs border-t border-outline-variant/60">
+<span class="font-label-code text-label-code text-slate-500">Python Runtime: CPython 3.11.8 (x86_64-linux-gnu)</span>
+<span class="font-label-badge text-label-badge text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-label-code font-semibold">Reproducible Environment Verified</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<script>
+  // Ensure the left sidebar highlights 'Documentation & Guide'
+  document.addEventListener('DOMContentLoaded', () => {
+    const navLinks = document.querySelectorAll('aside nav a[data-path]');
+    const activeClasses = (document.querySelector('aside nav')?.getAttribute('data-active-classes') || 'bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200/80 shadow-sm').split(' ');
+    
+    navLinks.forEach(link => {
+      if (link.getAttribute('data-path') === 'documentation-and-guide') {
+        link.classList.add(...activeClasses);
+        link.classList.remove('text-slate-600');
+      } else {
+        link.classList.remove(...activeClasses);
+      }
+    });
+
+    // Handle scrollspy tab styling
+    const tabs = document.querySelectorAll('.doc-nav-tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        tabs.forEach(t => {
+          t.classList.remove('bg-emerald-600', 'text-white', 'font-semibold', 'hover:bg-emerald-700');
+          t.classList.add('bg-white', 'text-slate-600', 'border', 'border-outline-variant');
+        });
+        tab.classList.remove('bg-white', 'text-slate-600', 'border', 'border-outline-variant');
+        tab.classList.add('bg-emerald-600', 'text-white', 'font-semibold', 'hover:bg-emerald-700');
+      });
+    });
+  });
+
+  // Accordion toggle handler
+  function toggleAccordion(id) {
+    const content = document.getElementById(id);
+    const icon = document.getElementById('icon-' + id);
+    if (!content) return;
+
+    const isHidden = content.classList.contains('hidden');
+    
+    // Close other viva accordions for clean presentation
+    document.querySelectorAll('[id^="viva-q"]').forEach(el => {
+      if (el.id !== id) {
+        el.classList.add('hidden');
+        const otherIcon = document.getElementById('icon-' + el.id);
+        if (otherIcon) otherIcon.classList.remove('rotate-180');
+      }
+    });
+
+    if (isHidden) {
+      content.classList.remove('hidden');
+      if (icon) icon.classList.add('rotate-180');
+    } else {
+      content.classList.add('hidden');
+      if (icon) icon.classList.remove('rotate-180');
+    }
+  }
+</script></main></div></body></html>

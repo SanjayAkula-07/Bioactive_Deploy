@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-base": "#ffffff",
+            "surface-subtle": "#ffffff",
+            "surface-container": "#f8fafc",
+            "surface-container-low": "#f8fafc",
+            "surface-container-high": "#f1f5f9",
+            "surface-raised": "#ffffff",
+            "surface-border": "#e2e8f0",
+            "on-surface": "#0f172a",
+            "on-surface-variant": "#64748b",
+            "primary": "#059669",
+            "primary-container": "#ecfdf5",
+            "secondary": "#0284c7",
+            "secondary-container": "#f0f9ff",
+            "bio-active": "#059669",
+            "bio-warning": "#d97706",
+            "bio-inactive": "#ef4444",
+            "error": "#dc2626",
+            "error-container": "#fef2f2",
+            "cpk-carbon": "#475569",
+            "cpk-oxygen": "#dc2626",
+            "cpk-nitrogen": "#2563eb",
+            "cpk-sulfur": "#d97706",
+            "cpk-halogen": "#16a34a"
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "lg": "0.375rem",
+            "xl": "0.5rem",
+            "2xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "gutter-desktop": "1.5rem"
+          },
+          fontFamily: {
+            "headline-lg": ["Space Grotesk", "sans-serif"],
+            "headline-md": ["Space Grotesk", "sans-serif"],
+            "headline-sm": ["Space Grotesk", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "label-code": ["JetBrains Mono", "monospace"],
+            "label-badge": ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+<script src="bp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/3dmol@2.4.2/build/3Dmol-min.js"></script>
+</head>
+<body class="bg-[#f8fafc] font-body-md text-[#0f172a] antialiased">
+<!-- Left Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full w-72 bg-white z-50 flex flex-col justify-between border-r border-[#e2e8f0] shadow-sm">
+<div class="flex flex-col">
+<!-- Logo Branding Header -->
+<div class="h-16 px-space-md flex items-center gap-space-sm border-b border-[#e2e8f0] bg-white">
+<img alt="BioPredict Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrDOk7-OtilqaBuZoeT7EWt1l_ZS0_DBxjlbTA8f24oXM-e8NtkZz35tD0niqIIOtxGd2Mmea4Ww5VvJudFSawaGlVBSn7tDtublchkdQdFiC9VFNTYxcjr-pcUC58wFYT2K75J5UIKwhndA0uWpasc2JFWXPrkQ5kJTFPSJjldmQUkb2j-ikYTOAW_ZPAnmJG_7fTM0RnewU6FDHbNXMk88EOMmJnAbmQ-EO9Bcfcc"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-base text-[#0f172a] font-bold tracking-tight">BioPredict</span>
+</div>
+<span class="font-label-badge text-[10px] text-[#059669] font-semibold uppercase tracking-wider">v1.2.0 • XGBoost Active</span>
+</div>
+</div>
+<!-- Target Badge Pill -->
+<div class="px-space-md py-space-sm">
+<div class="px-space-sm py-2 rounded-lg bg-[#f1f5f9] border border-[#e2e8f0] flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-[#059669] animate-pulse"></span>
+<span class="font-label-code text-xs text-[#475569] font-medium">Target: CHEMBL230</span>
+</div>
+<span class="font-label-badge text-[11px] text-[#059669] bg-[#ecfdf5] border border-[#a7f3d0] font-semibold px-2 py-0.5 rounded">COX-2</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col px-space-sm py-space-xs gap-1">
+<a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-body-md text-sm text-[#475569] hover:bg-[#f1f5f9] hover:text-[#0f172a] transition-all" data-path="single-predictor" href="#">
+<span class="material-symbols-outlined text-xl text-[#64748b]">science</span>
+<span>Single Predictor</span>
+</a>
+<a aria-current="page" class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-body-md text-sm bg-[#ecfdf5] text-[#059669] font-semibold border border-[#a7f3d0] shadow-sm transition-all" data-path="batch-screening" href="#">
+<span class="material-symbols-outlined text-xl text-[#059669]">dataset</span>
+<span>Batch Screening</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-body-md text-sm text-[#475569] hover:bg-[#f1f5f9] hover:text-[#0f172a] transition-all" data-path="model-benchmarks" href="#">
+<span class="material-symbols-outlined text-xl text-[#64748b]">analytics</span>
+<span>Model Benchmarks</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-body-md text-sm text-[#475569] hover:bg-[#f1f5f9] hover:text-[#0f172a] transition-all" data-path="documentation-and-guide" href="#">
+<span class="material-symbols-outlined text-xl text-[#64748b]">menu_book</span>
+<span>Documentation &amp; Guide</span>
+</a>
+<a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-body-md text-sm text-[#475569] hover:bg-[#f1f5f9] hover:text-[#0f172a] transition-all" data-path="login-and-security" href="#">
+<span class="material-symbols-outlined text-xl text-[#64748b]">lock</span>
+<span>Login &amp; Security</span>
+</a>
+</nav>
+</div>
+<!-- Profile & Status Widget -->
+<div class="p-space-md bg-[#f8fafc] border-t border-[#e2e8f0] flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-[#e2e8f0]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNbXQ7T5_p689Vh_aYrDZW7QzTnWrJVGbWpJuqdI5IPbrD5EUQNt5ex2Wzw-J3QBX17xVyq6SrPato_dEJLtyOYpGSewxx1TP7YvusRt5ij3qAYTDC5jode_kuymBTF-W1XTTmt5P3uuOPFWUBERdYa-2SICypxrRxpVT6eclFrMhKmy8IMIpIZrivqCXmhYHJbprwzmbHppGYpJelz265wrOqtYymhsAygtnYIeA"/>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-body-sm text-xs font-semibold text-[#0f172a] truncate">Dr. Elena Vance</span>
+<span class="font-label-badge text-[10px] text-[#64748b] truncate">Computational Chemist</span>
+</div>
+<a class="text-[#64748b] hover:text-[#0f172a] p-1 transition-colors" data-path="login-and-security" href="#" title="Switch Account">
+<span class="material-symbols-outlined text-lg">logout</span>
+</a>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-[#e2e8f0]/60">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#059669]"></span>
+<span class="font-label-badge text-[11px] text-[#64748b]">API Online (Uvicorn 0.28)</span>
+</div>
+<span class="font-label-badge text-[11px] text-[#0284c7] font-semibold font-label-code">14ms</span>
+</div>
+</div>
+</aside>
+<!-- Main View Area -->
+<div class="pl-72">
+<!-- Top Header Bar -->
+<header class="fixed top-0 left-72 right-0 h-16 bg-white/95 backdrop-blur-md z-40 border-b border-[#e2e8f0]">
+<div class="h-16 w-full px-gutter-desktop flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<img alt="BioPredict Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrDOk7-OtilqaBuZoeT7EWt1l_ZS0_DBxjlbTA8f24oXM-e8NtkZz35tD0niqIIOtxGd2Mmea4Ww5VvJudFSawaGlVBSn7tDtublchkdQdFiC9VFNTYxcjr-pcUC58wFYT2K75J5UIKwhndA0uWpasc2JFWXPrkQ5kJTFPSJjldmQUkb2j-ikYTOAW_ZPAnmJG_7fTM0RnewU6FDHbNXMk88EOMmJnAbmQ-EO9Bcfcc"/>
+<div class="hidden sm:flex items-center gap-space-sm">
+<span class="font-label-code text-xs text-[#64748b]">Target:</span>
+<span class="px-2.5 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#059669] font-label-code text-xs font-semibold flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#059669]"></span>COX-2 (CHEMBL230) Model Ready
+            </span>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="hidden md:flex items-center px-3 py-1.5 rounded-lg bg-[#f8fafc] border border-[#e2e8f0] font-label-code text-xs text-[#475569] gap-space-xs">
+<span class="material-symbols-outlined text-sm text-[#059669]">memory</span>
+<span>Morgan ECFP4 • n=2048</span>
+</div>
+<img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-[#059669]/40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNbXQ7T5_p689Vh_aYrDZW7QzTnWrJVGbWpJuqdI5IPbrD5EUQNt5ex2Wzw-J3QBX17xVyq6SrPato_dEJLtyOYpGSewxx1TP7YvusRt5ij3qAYTDC5jode_kuymBTF-W1XTTmt5P3uuOPFWUBERdYa-2SICypxrRxpVT6eclFrMhKmy8IMIpIZrivqCXmhYHJbprwzmbHppGYpJelz265wrOqtYymhsAygtnYIeA"/>
+</div>
+</div>
+</header>
+<!-- Page Content Container -->
+<main class="w-full pt-16 bg-[#ffffff] min-h-screen">
+<div class="flex flex-col w-full px-gutter-desktop py-space-xl">
+<!-- Header Banner Section -->
+<div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-space-md pb-space-lg border-b border-[#e2e8f0]">
+<div class="flex flex-col gap-space-xs max-w-3xl">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-[#f0f9ff] border border-[#bae6fd] font-label-badge text-xs font-semibold text-[#0284c7] uppercase tracking-wider">Pipeline v2.4</span>
+<span class="text-[#64748b] text-xs font-label-code">• Target: COX-2 (Prostaglandin G/H Synthase 2)</span>
+</div>
+<h1 class="font-headline-lg text-2xl md:text-3xl text-[#0f172a] tracking-tight font-bold">
+              High-Throughput In Silico Virtual Screening of Chemical Libraries
+            </h1>
+<p class="font-body-md text-sm md:text-base text-[#64748b]">
+              Rapidly predict ligand binding affinities and biological inhibition profiles against <span class="font-label-code font-semibold text-[#059669]">CHEMBL230</span> using pre-trained gradient-boosted ensembles (ECFP4 fingerprints, 2048-bit radius).
+            </p>
+</div>
+<!-- Quick Session Telemetry -->
+<div class="flex items-center gap-space-md bg-[#f8fafc] border border-[#e2e8f0] px-4 py-3 rounded-xl shadow-sm">
+<div class="flex flex-col">
+<span class="font-label-badge text-[10px] text-[#64748b] uppercase font-semibold">Engine Latency</span>
+<span class="font-label-code text-sm text-[#059669] font-bold">1.8 ms/mol</span>
+</div>
+<div class="w-px h-8 bg-[#e2e8f0]"></div>
+<div class="flex flex-col">
+<span class="font-label-badge text-[10px] text-[#64748b] uppercase font-semibold">Parallel Workers</span>
+<span class="font-label-code text-sm text-[#0284c7] font-bold">8x c6i.2xlarge</span>
+</div>
+</div>
+</div>
+<!-- Upload & File Management Section -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md mt-6">
+<!-- Drag & Drop Dropzone Container (Span 8) -->
+<div class="lg:col-span-8 group relative flex flex-col items-center justify-center p-space-xl rounded-xl bg-white border-2 border-dashed border-[#cbd5e1] hover:border-[#10b981] hover:bg-[#ecfdf5]/30 transition-all cursor-pointer shadow-sm overflow-hidden" id="dropZone">
+<div class="relative flex flex-col items-center text-center gap-space-sm">
+<div class="w-14 h-14 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] flex items-center justify-center text-[#059669] group-hover:scale-110 group-hover:bg-[#059669] group-hover:text-white transition-all duration-300 shadow-sm">
+<span class="material-symbols-outlined text-3xl">cloud_upload</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="font-headline-sm text-base text-[#0f172a] font-semibold">Upload CSV containing SMILES or Compound Name column</h3>
+<p class="font-body-md text-xs sm:text-sm text-[#64748b]">Drag and drop library file or click to browse filesystem (<span class="font-label-code text-[#0f172a] font-medium">.csv, .tsv, .smi</span> supported up to 250MB)</p>
+</div>
+<div class="flex items-center flex-wrap justify-center gap-space-xs mt-space-xs">
+<span class="px-2.5 py-1 rounded bg-[#f1f5f9] border border-[#e2e8f0] font-label-badge text-[11px] text-[#475569]">Auto-detect Header</span>
+<span class="px-2.5 py-1 rounded bg-[#f1f5f9] border border-[#e2e8f0] font-label-badge text-[11px] text-[#475569]">RDKit Kekulization</span>
+<span class="px-2.5 py-1 rounded bg-[#f1f5f9] border border-[#e2e8f0] font-label-badge text-[11px] text-[#475569]">Tanimoto Deduplication</span>
+</div>
+</div>
+</div>
+<!-- File Status & Quick Actions Card (Span 4) -->
+<div class="lg:col-span-4 flex flex-col justify-between p-space-lg rounded-xl bg-white border border-[#e2e8f0] shadow-sm">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-sm bg-[#f8fafc] border border-[#e2e8f0] p-space-sm rounded-lg">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="material-symbols-outlined text-[#0284c7]">description</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-code text-xs text-[#0f172a] font-bold truncate" id="loadedFileName">sample_molecules.csv</span>
+<span class="font-label-badge text-[10px] text-[#64748b]">4.2 KB • UTF-8 Tabular</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#059669] font-label-badge text-[10px] font-bold uppercase">Loaded</span>
+</div>
+<div class="flex flex-col gap-2 font-body-sm text-xs text-[#64748b]">
+<div class="flex items-center justify-between">
+<span>Molecules Detected:</span>
+<span class="font-label-code text-[#0f172a] font-semibold">10 compounds</span>
+</div>
+<div class="flex items-center justify-between">
+<span>Sanitization State:</span>
+<span class="flex items-center gap-1 font-label-code text-[#059669] font-semibold">
+<span class="material-symbols-outlined text-sm">check_circle</span> RDKit Ready
+                  </span>
+</div>
+<div class="flex items-center justify-between">
+<span>Feature Matrix:</span>
+<span class="font-label-code text-[#0f172a]">2048-bit ECFP4 Fingerprints</span>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-space-sm pt-space-md">
+<button class="w-full flex items-center justify-center gap-space-xs py-2.5 px-space-md rounded-xl bg-[#059669] text-white font-body-md font-semibold hover:bg-[#047857] active:scale-[0.99] transition-all shadow-md shadow-[#059669]/20" id="btnProcessScreening">
+<span class="material-symbols-outlined text-lg">bolt</span>
+<span>Process Virtual Screening (XGBoost)</span>
+</button>
+<div class="grid grid-cols-2 gap-space-sm">
+<button class="flex items-center justify-center gap-1.5 py-2 px-space-sm rounded-xl bg-[#f8fafc] border border-[#e2e8f0] text-[#334155] font-body-sm text-xs font-medium hover:bg-[#f1f5f9] transition-colors" id="btnLoadSample">
+<span class="material-symbols-outlined text-base text-[#0284c7]">refresh</span>
+<span>Load Sample CSV</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 py-2 px-space-sm rounded-xl bg-[#fef2f2] border border-[#fecaca] text-[#dc2626] font-body-sm text-xs font-medium hover:bg-[#fee2e2] transition-colors" id="btnClearData">
+<span class="material-symbols-outlined text-base">delete_sweep</span>
+<span>Clear Data</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Screening Summary Statistics Bento Row -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mt-6">
+<!-- Total Screened -->
+<div class="p-space-lg rounded-xl bg-white border border-[#e2e8f0] flex flex-col justify-between shadow-sm relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-badge text-xs font-semibold text-[#64748b] uppercase tracking-wider">Total Screened</span>
+<span class="p-2 rounded-lg bg-[#f1f5f9] text-[#475569] material-symbols-outlined text-lg">biotech</span>
+</div>
+<div class="mt-space-md flex items-baseline gap-space-xs">
+<span class="font-headline-lg text-3xl font-bold text-[#0f172a]">10</span>
+<span class="font-body-sm text-xs text-[#64748b]">Compounds</span>
+</div>
+<div class="mt-space-xs w-full bg-[#f1f5f9] h-1.5 rounded-full overflow-hidden">
+<div class="bg-[#475569] h-full rounded-full w-full"></div>
+</div>
+</div>
+<!-- Predicted Active -->
+<div class="p-space-lg rounded-xl bg-white border border-[#e2e8f0] flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-badge text-xs font-semibold text-[#059669] uppercase tracking-wider">Predicted Active</span>
+<span class="p-2 rounded-lg bg-[#ecfdf5] text-[#059669] material-symbols-outlined text-lg">check_circle</span>
+</div>
+<div class="mt-space-md flex items-baseline gap-space-xs">
+<span class="font-headline-lg text-3xl font-bold text-[#059669]">5</span>
+<span class="font-body-sm text-xs text-[#059669] font-medium">Compounds (50%)</span>
+</div>
+<div class="mt-space-xs w-full bg-[#f1f5f9] h-1.5 rounded-full overflow-hidden">
+<div class="bg-[#059669] h-full rounded-full w-1/2"></div>
+</div>
+</div>
+<!-- Predicted Inactive -->
+<div class="p-space-lg rounded-xl bg-white border border-[#e2e8f0] flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-badge text-xs font-semibold text-[#64748b] uppercase tracking-wider">Predicted Inactive</span>
+<span class="p-2 rounded-lg bg-[#f1f5f9] text-[#64748b] material-symbols-outlined text-lg">cancel</span>
+</div>
+<div class="mt-space-md flex items-baseline gap-space-xs">
+<span class="font-headline-lg text-3xl font-bold text-[#0f172a]">4</span>
+<span class="font-body-sm text-xs text-[#64748b]">Compounds (40%)</span>
+</div>
+<div class="mt-space-xs w-full bg-[#f1f5f9] h-1.5 rounded-full overflow-hidden">
+<div class="bg-[#94a3b8] h-full rounded-full w-2/5"></div>
+</div>
+</div>
+<!-- Validation Errors -->
+<div class="p-space-lg rounded-xl bg-white border border-[#e2e8f0] flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-badge text-xs font-semibold text-[#dc2626] uppercase tracking-wider">Validation Errors</span>
+<span class="p-2 rounded-lg bg-[#fef2f2] text-[#dc2626] material-symbols-outlined text-lg">warning</span>
+</div>
+<div class="mt-space-md flex items-baseline gap-space-xs">
+<span class="font-headline-lg text-3xl font-bold text-[#dc2626]">1</span>
+<span class="font-body-sm text-xs text-[#dc2626] font-medium">Invalid SMILES</span>
+</div>
+<div class="mt-space-xs w-full bg-[#f1f5f9] h-1.5 rounded-full overflow-hidden">
+<div class="bg-[#dc2626] h-full rounded-full w-[10%]"></div>
+</div>
+</div>
+</div>
+<!-- Filter & Operational Control Bar -->
+<div class="flex flex-col md:flex-row items-center justify-between gap-space-md mt-8 p-3 rounded-xl bg-white border border-[#e2e8f0] shadow-sm">
+<div class="flex items-center flex-wrap gap-2 w-full md:w-auto">
+<div class="relative flex-1 md:w-64">
+<span class="material-symbols-outlined absolute left-3 top-2 text-[#94a3b8] text-lg">search</span>
+<input class="w-full pl-9 pr-3 py-1.5 rounded-lg bg-[#f8fafc] border border-[#cbd5e1] text-[#0f172a] font-body-sm text-xs focus:outline-none focus:ring-2 focus:ring-[#059669]/40 focus:border-[#059669] placeholder-[#94a3b8]" id="searchInput" placeholder="Filter by Name or SMILES..." type="text"/>
+</div>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#f1f5f9] border border-[#e2e8f0] text-[#334155] hover:text-[#0f172a] hover:bg-[#e2e8f0] font-label-badge text-xs font-medium transition-colors" id="filterActiveBtn">
+<span class="material-symbols-outlined text-sm text-[#059669]">filter_alt</span>
+<span>Filter by Active Only</span>
+</button>
+<button class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#f1f5f9] border border-[#e2e8f0] text-[#64748b] hover:text-[#0f172a] hover:bg-[#e2e8f0] font-label-badge text-xs font-medium transition-colors" id="filterResetBtn">
+<span>Show All</span>
+</button>
+</div>
+<div class="flex items-center gap-space-sm w-full md:w-auto justify-end">
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0284c7] hover:bg-[#0369a1] text-white font-body-sm text-xs font-semibold transition-colors shadow-sm" id="btnExportCSV">
+<span class="material-symbols-outlined text-base">file_download</span>
+<span>Export Results to CSV</span>
+</button>
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0284c7] hover:bg-[#0369a1] text-white font-body-sm text-xs font-semibold transition-colors shadow-sm" id="btnDownloadSDF">
+<span class="material-symbols-outlined text-base">folder_zip</span>
+<span>Download SDF Library</span>
+</button>
+</div>
+</div>
+<!-- Filterable Results Table Section -->
+<div class="mt-4 rounded-xl overflow-hidden bg-white border border-[#e2e8f0] shadow-sm">
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f8fafc] border-b border-[#e2e8f0] text-[#475569] font-label-badge text-xs uppercase tracking-wider">
+<th class="py-3 px-space-md w-16">ID</th>
+<th class="py-3 px-space-md">Molecule Name</th>
+<th class="py-3 px-space-md">SMILES String</th>
+<th class="py-3 px-space-md">RDKit Validation</th>
+<th class="py-3 px-space-md">Predicted Activity</th>
+<th class="py-3 px-space-md text-right">Confidence Score</th>
+<th class="py-3 px-space-md text-center w-24">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#e2e8f0] font-body-md text-sm text-[#0f172a]" id="screeningTableBody">
+<!-- Row 1 -->
+<tr class="hover:bg-[#f8fafc] transition-colors" data-name="ethanol" data-smiles="cco" data-status="inactive">
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#64748b]">01</td>
+<td class="py-3.5 px-space-md font-semibold text-[#0f172a]">Ethanol</td>
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#0284c7] hover:underline cursor-pointer" onclick="copySmiles('CCO')">CCO</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 text-[#059669] font-label-badge text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-[#059669]"></span> Valid
+                    </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-[#f1f5f9] text-[#475569] border border-[#e2e8f0] font-label-badge text-xs font-semibold">INACTIVE</span>
+</td>
+<td class="py-3.5 px-space-md text-right font-label-code text-xs font-semibold text-[#0f172a]">91.4%</td>
+<td class="py-3.5 px-space-md text-center">
+<button class="p-1.5 rounded-lg hover:bg-[#f1f5f9] text-[#64748b] hover:text-[#059669] transition-colors" onclick="previewMol('Ethanol', 'CCO')" title="Inspect Conformation">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-[#f8fafc] transition-colors bg-[#ecfdf5]/40" data-name="aspirin" data-smiles="cc(=o)oc1ccccc1c(=o)o" data-status="active">
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#64748b]">02</td>
+<td class="py-3.5 px-space-md font-semibold text-[#0f172a]">Aspirin</td>
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#0284c7] hover:underline cursor-pointer" onclick="copySmiles('CC(=O)Oc1ccccc1C(=O)O')">CC(=O)Oc1ccccc1C(=O)O</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 text-[#059669] font-label-badge text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-[#059669]"></span> Valid
+                    </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-[#dcfce7] text-[#15803d] border border-[#86efac] font-label-badge text-xs font-bold shadow-sm">ACTIVE</span>
+</td>
+<td class="py-3.5 px-space-md text-right font-label-code text-xs font-bold text-[#059669]">89.6%</td>
+<td class="py-3.5 px-space-md text-center">
+<button class="p-1.5 rounded-lg hover:bg-[#f1f5f9] text-[#64748b] hover:text-[#059669] transition-colors" onclick="previewMol('Aspirin', 'CC(=O)Oc1ccccc1C(=O)O')" title="Inspect Conformation">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-[#f8fafc] transition-colors" data-name="benzene" data-smiles="c1ccccc1" data-status="inactive">
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#64748b]">03</td>
+<td class="py-3.5 px-space-md font-semibold text-[#0f172a]">Benzene</td>
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#0284c7] hover:underline cursor-pointer" onclick="copySmiles('c1ccccc1')">c1ccccc1</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 text-[#059669] font-label-badge text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-[#059669]"></span> Valid
+                    </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-[#f1f5f9] text-[#475569] border border-[#e2e8f0] font-label-badge text-xs font-semibold">INACTIVE</span>
+</td>
+<td class="py-3.5 px-space-md text-right font-label-code text-xs font-semibold text-[#0f172a]">96.2%</td>
+<td class="py-3.5 px-space-md text-center">
+<button class="p-1.5 rounded-lg hover:bg-[#f1f5f9] text-[#64748b] hover:text-[#059669] transition-colors" onclick="previewMol('Benzene', 'c1ccccc1')" title="Inspect Conformation">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-[#f8fafc] transition-colors bg-[#ecfdf5]/40" data-name="ibuprofen" data-smiles="cc(c)cc1ccc(cc1)c(c)c(=o)o" data-status="active">
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#64748b]">04</td>
+<td class="py-3.5 px-space-md font-semibold text-[#0f172a]">Ibuprofen</td>
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#0284c7] hover:underline cursor-pointer" onclick="copySmiles('CC(C)Cc1ccc(cc1)C(C)C(=O)O')">CC(C)Cc1ccc(cc1)C(C)C(=O)O</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 text-[#059669] font-label-badge text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-[#059669]"></span> Valid
+                    </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-[#dcfce7] text-[#15803d] border border-[#86efac] font-label-badge text-xs font-bold shadow-sm">ACTIVE</span>
+</td>
+<td class="py-3.5 px-space-md text-right font-label-code text-xs font-bold text-[#059669]">92.1%</td>
+<td class="py-3.5 px-space-md text-center">
+<button class="p-1.5 rounded-lg hover:bg-[#f1f5f9] text-[#64748b] hover:text-[#059669] transition-colors" onclick="previewMol('Ibuprofen', 'CC(C)Cc1ccc(cc1)C(C)C(=O)O')" title="Inspect Conformation">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-[#f8fafc] transition-colors bg-[#ecfdf5]/40" data-name="celecoxib_analog" data-smiles="cs(=o)(=o)c1ccc(-c2csc(cc(=o)o)c2-c2ccc(f)cc2)cc1" data-status="active">
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#64748b]">05</td>
+<td class="py-3.5 px-space-md font-semibold text-[#0f172a]">Celecoxib_Analog</td>
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#0284c7] hover:underline cursor-pointer" onclick="copySmiles('CS(=O)(=O)c1ccc(-c2csc(CC(=O)O)c2-c2ccc(F)cc2)cc1')">CS(=O)(=O)c1ccc(-c2csc(CC(=O)O)c2-c2ccc(F)cc2)cc1</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 text-[#059669] font-label-badge text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-[#059669]"></span> Valid
+                    </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-[#dcfce7] text-[#15803d] border border-[#86efac] font-label-badge text-xs font-bold shadow-sm">ACTIVE</span>
+</td>
+<td class="py-3.5 px-space-md text-right font-label-code text-xs font-bold text-[#059669]">94.8%</td>
+<td class="py-3.5 px-space-md text-center">
+<button class="p-1.5 rounded-lg hover:bg-[#f1f5f9] text-[#64748b] hover:text-[#059669] transition-colors" onclick="previewMol('Celecoxib_Analog', 'CS(=O)(=O)c1ccc(-c2csc(CC(=O)O)c2-c2ccc(F)cc2)cc1')" title="Inspect Conformation">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-[#f8fafc] transition-colors bg-[#ecfdf5]/40" data-name="acetaminophen" data-smiles="cc(=o)nc1ccc(o)cc1" data-status="active">
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#64748b]">06</td>
+<td class="py-3.5 px-space-md font-semibold text-[#0f172a]">Acetaminophen</td>
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#0284c7] hover:underline cursor-pointer" onclick="copySmiles('CC(=O)Nc1ccc(O)cc1')">CC(=O)Nc1ccc(O)cc1</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 text-[#059669] font-label-badge text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-[#059669]"></span> Valid
+                    </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-[#dcfce7] text-[#15803d] border border-[#86efac] font-label-badge text-xs font-bold shadow-sm">ACTIVE</span>
+</td>
+<td class="py-3.5 px-space-md text-right font-label-code text-xs font-bold text-[#059669]">85.3%</td>
+<td class="py-3.5 px-space-md text-center">
+<button class="p-1.5 rounded-lg hover:bg-[#f1f5f9] text-[#64748b] hover:text-[#059669] transition-colors" onclick="previewMol('Acetaminophen', 'CC(=O)Nc1ccc(O)cc1')" title="Inspect Conformation">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 7 -->
+<tr class="hover:bg-[#f8fafc] transition-colors bg-[#ecfdf5]/40" data-name="naproxen" data-smiles="coc1ccc2cc(c(c)c(=o)o)ccc2c1" data-status="active">
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#64748b]">07</td>
+<td class="py-3.5 px-space-md font-semibold text-[#0f172a]">Naproxen</td>
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#0284c7] hover:underline cursor-pointer" onclick="copySmiles('COc1ccc2cc(C(C)C(=O)O)ccc2c1')">COc1ccc2cc(C(C)C(=O)O)ccc2c1</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 text-[#059669] font-label-badge text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-[#059669]"></span> Valid
+                    </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-[#dcfce7] text-[#15803d] border border-[#86efac] font-label-badge text-xs font-bold shadow-sm">ACTIVE</span>
+</td>
+<td class="py-3.5 px-space-md text-right font-label-code text-xs font-bold text-[#059669]">93.0%</td>
+<td class="py-3.5 px-space-md text-center">
+<button class="p-1.5 rounded-lg hover:bg-[#f1f5f9] text-[#64748b] hover:text-[#059669] transition-colors" onclick="previewMol('Naproxen', 'COc1ccc2cc(C(C)C(=O)O)ccc2c1')" title="Inspect Conformation">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 8 -->
+<tr class="hover:bg-[#f8fafc] transition-colors" data-name="caffeine" data-smiles="cn1cnc2c1c(=o)n(c)c(=o)n2c" data-status="inactive">
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#64748b]">08</td>
+<td class="py-3.5 px-space-md font-semibold text-[#0f172a]">Caffeine</td>
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#0284c7] hover:underline cursor-pointer" onclick="copySmiles('Cn1cnc2c1c(=O)n(C)c(=O)n2C')">Cn1cnc2c1c(=O)n(C)c(=O)n2C</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 text-[#059669] font-label-badge text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-[#059669]"></span> Valid
+                    </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-[#f1f5f9] text-[#475569] border border-[#e2e8f0] font-label-badge text-xs font-semibold">INACTIVE</span>
+</td>
+<td class="py-3.5 px-space-md text-right font-label-code text-xs font-semibold text-[#0f172a]">88.5%</td>
+<td class="py-3.5 px-space-md text-center">
+<button class="p-1.5 rounded-lg hover:bg-[#f1f5f9] text-[#64748b] hover:text-[#059669] transition-colors" onclick="previewMol('Caffeine', 'Cn1cnc2c1c(=O)n(C)c(=O)n2C')" title="Inspect Conformation">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 9 -->
+<tr class="hover:bg-[#f8fafc] transition-colors bg-[#fef2f2]/60" data-name="invalid_sample" data-smiles="invalid_chem_string" data-status="error">
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#dc2626]">09</td>
+<td class="py-3.5 px-space-md font-semibold text-[#dc2626]">Invalid_Sample</td>
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#dc2626] italic">INVALID_CHEM_STRING</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 text-[#dc2626] font-label-badge text-xs font-semibold">
+<span class="material-symbols-outlined text-sm">error</span> Syntax Error
+                    </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-[#fee2e2] text-[#dc2626] border border-[#fca5a5] font-label-badge text-xs font-bold">ERROR</span>
+</td>
+<td class="py-3.5 px-space-md text-right font-label-code text-xs text-[#94a3b8]">--</td>
+<td class="py-3.5 px-space-md text-center">
+<button class="p-1.5 rounded text-[#94a3b8]/50 cursor-not-allowed" disabled="">
+<span class="material-symbols-outlined text-lg">block</span>
+</button>
+</td>
+</tr>
+<!-- Row 10 -->
+<tr class="hover:bg-[#f8fafc] transition-colors" data-name="propane" data-smiles="ccc" data-status="inactive">
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#64748b]">10</td>
+<td class="py-3.5 px-space-md font-semibold text-[#0f172a]">Propane</td>
+<td class="py-3.5 px-space-md font-label-code text-xs text-[#0284c7] hover:underline cursor-pointer" onclick="copySmiles('CCC')">CCC</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 text-[#059669] font-label-badge text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-[#059669]"></span> Valid
+                    </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="px-2.5 py-0.5 rounded-full bg-[#f1f5f9] text-[#475569] border border-[#e2e8f0] font-label-badge text-xs font-semibold">INACTIVE</span>
+</td>
+<td class="py-3.5 px-space-md text-right font-label-code text-xs font-semibold text-[#0f172a]">97.0%</td>
+<td class="py-3.5 px-space-md text-center">
+<button class="p-1.5 rounded-lg hover:bg-[#f1f5f9] text-[#64748b] hover:text-[#059669] transition-colors" onclick="previewMol('Propane', 'CCC')" title="Inspect Conformation">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination / Result Status Footer -->
+<div class="px-space-md py-3 bg-[#f8fafc] border-t border-[#e2e8f0] flex flex-col sm:flex-row items-center justify-between gap-space-sm text-xs font-body-sm text-[#64748b]">
+<div class="flex items-center gap-space-sm">
+<span>Displaying 1 - 10 of 10 items</span>
+<span class="w-1 h-1 rounded-full bg-[#94a3b8]"></span>
+<span class="font-label-code text-[#0284c7] font-medium">RDKit MolCheck: 90% Success Rate</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="px-2.5 py-1 rounded bg-white border border-[#e2e8f0] font-label-code text-xs text-[#0f172a] shadow-xs">Page 1 of 1</span>
+</div>
+</div>
+</div>
+<!-- Molecule Quick Conformation Modal / Drawer Overlay -->
+<div class="fixed inset-0 z-50 bg-[#0f172a]/40 backdrop-blur-sm hidden items-center justify-center p-space-md" id="quickMolModal">
+<div class="w-full max-w-xl bg-white border border-[#e2e8f0] rounded-2xl shadow-2xl p-space-lg flex flex-col gap-space-md animate-in fade-in zoom-in duration-200">
+<div class="flex items-center justify-between pb-space-xs border-b border-[#e2e8f0]">
+<div class="flex flex-col">
+<h3 class="font-headline-md text-xl text-[#0f172a] font-bold" id="modalCompoundName">Aspirin</h3>
+<span class="font-label-code text-xs text-[#0284c7]" id="modalCompoundSmiles">CC(=O)Oc1ccccc1C(=O)O</span>
+</div>
+<button class="p-2 rounded-lg bg-[#f1f5f9] text-[#64748b] hover:text-[#0f172a] hover:bg-[#e2e8f0] transition-colors" onclick="closeModal()">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+<!-- 3D Conformation Simulation Stage -->
+<div class="relative w-full h-64 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl overflow-hidden flex items-center justify-center">
+<div class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white/90 border border-[#e2e8f0] shadow-sm font-label-badge text-[11px] text-[#059669] flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-[#059669] animate-ping"></span>
+<span class="font-semibold">MMFF94 Conformer Energy Minimization</span>
+</div>
+<!-- Chemical Conformation Graphic Representation -->
+<svg class="w-48 h-48 text-[#059669] animate-[spin_18s_linear_infinite]" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 100 100">
+<circle class="text-[#0284c7] opacity-30" cx="50" cy="50" r="30" stroke-dasharray="4 4"></circle>
+<polygon class="text-[#059669]" points="50,20 80,35 80,65 50,80 20,65 20,35" stroke="currentColor"></polygon>
+<circle cx="50" cy="20" fill="#dc2626" r="4.5"></circle>
+<circle cx="80" cy="35" fill="#2563eb" r="4.5"></circle>
+<circle cx="80" cy="65" fill="#475569" r="4.5"></circle>
+<circle cx="50" cy="80" fill="#059669" r="4.5"></circle>
+<circle cx="20" cy="65" fill="#475569" r="4.5"></circle>
+<circle cx="20" cy="35" fill="#16a34a" r="4.5"></circle>
+<line stroke="#0284c7" stroke-width="1.5" x1="50" x2="50" y1="20" y2="50"></line>
+<line stroke="#0284c7" stroke-width="1.5" x1="80" x2="50" y1="35" y2="50"></line>
+<line stroke="#0284c7" stroke-width="1.5" x1="80" x2="50" y1="65" y2="50"></line>
+</svg>
+<!-- CPK Color Palette Dock -->
+<div class="absolute bottom-2 left-2 flex items-center gap-2 px-2.5 py-1 rounded bg-white/95 border border-[#e2e8f0] text-[10px] font-label-code text-[#475569] shadow-sm">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#475569] inline-block"></span> C</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#dc2626] inline-block"></span> O</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#2563eb] inline-block"></span> N</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#d97706] inline-block"></span> S</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#16a34a] inline-block"></span> F</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-space-sm">
+<div class="p-3 rounded-lg bg-[#f8fafc] border border-[#e2e8f0] flex flex-col">
+<span class="font-label-badge text-[10px] text-[#64748b] uppercase font-semibold">Mol Weight</span>
+<span class="font-label-code text-xs text-[#0f172a] font-bold mt-0.5">180.16 g/mol</span>
+</div>
+<div class="p-3 rounded-lg bg-[#f8fafc] border border-[#e2e8f0] flex flex-col">
+<span class="font-label-badge text-[10px] text-[#64748b] uppercase font-semibold">LogP</span>
+<span class="font-label-code text-xs text-[#0f172a] font-bold mt-0.5">1.19</span>
+</div>
+<div class="p-3 rounded-lg bg-[#f8fafc] border border-[#e2e8f0] flex flex-col">
+<span class="font-label-badge text-[10px] text-[#64748b] uppercase font-semibold">H-Bond Donors</span>
+<span class="font-label-code text-xs text-[#0f172a] font-bold mt-0.5">1</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Toast Element -->
+<div class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 px-space-md py-3 rounded-xl bg-white border border-[#e2e8f0] text-[#0f172a] shadow-xl" id="toastNotification">
+<span class="material-symbols-outlined text-[#059669] text-xl">verified</span>
+<span class="font-body-md text-sm font-medium" id="toastMessage">SMILES copied to clipboard</span>
+</div>
+</div>
+</main>
+</div>
+<!-- Interactive Logic Script -->
+
+<script src="bp-batch.js"></script>
+</body></html>
